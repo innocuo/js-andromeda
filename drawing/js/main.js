@@ -1,14 +1,33 @@
 var s;
 var p_follow;
+var mouse ={
+  x: 0,
+  y: 0,
+  scaledX: 0,
+  scaledY: 0
+}
+
+
+function createPlant(){
+  //var p = s.path("M0,0L"+Math.round(mouse.scaledX)+","+Math.round(mouse.scaledY));
+  var p = s.path("M0,0V-50C0,-75,25,-75,25,-75C25,-75,50,-75,50,-50");
+  p.attr({
+    fill: ["rgb(", Math.round(Math.random()*255),',',Math.round(Math.random()*255),',',Math.round(Math.random()*255), ")"].join(''),
+    stroke: '#fb0090',
+    'strokeWidth': 2
+  });
+  var t2 = 'V-100C50,-100,50,-200,150,-200C150,-200,250,-200,250,-100';
+  t2+= 'V0H0';
+  //p.node.attributes.d+="H100"
+  console.log(p.node.attributes.d.nodeValue+=t2)
+
+  p.transform(['t',mouse.scaledX,',',mouse.scaledY].join(''));
+  //send to back
+  p.prependTo(s);
+}
 $(function(){
 
-  var mouse ={
-    x: 0,
-    y: 0,
-    scaledX: 0,
-    scaledY: 0
-  },
-  ref_radius = 10,
+  var ref_radius = 10,
   stage_x = 500,
   stage_2x = stage_x * 2;
 
@@ -46,7 +65,9 @@ $(function(){
     var circle = s.circle(mouse.scaledX, mouse.scaledY,2);
     circle.attr({
       fill:"#2b96b1"
-    })
+    });
+
+    createPlant();
   });
 
   function step(timestamp) {
