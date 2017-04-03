@@ -50,7 +50,9 @@ $(function(){
       fill:"#2b96b1"
     });
 //var stree=new Tree();
+var cols = 1+Math.round( Math.random() * (4-1));
 var tree = SVGTree.instantiate(s);
+tree.set('cols', cols);
 tree.set_random('fill');
 tree.draw();
 tree.move(mouse.scaledX, mouse.scaledY);

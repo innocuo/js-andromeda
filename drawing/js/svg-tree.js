@@ -12,7 +12,7 @@ var SVGTree = (function(){
       stroke: 'rgb(255,255,255)',
       strokeWidth: 2,
       min_h: 10,
-      max_h: 100,
+      max_h: 50,
       min_r: 20,
       max_r: 40,
       cols: 3
@@ -67,14 +67,15 @@ var SVGTree = (function(){
       }
 
       end_draw();
-
-      //send to back
-      path.prependTo(paper);
     }
 
     this.set = function(key, value){
 
       properties[key] = value;
+    }
+
+    this.send_to_back = function(){
+      path.prependTo(paper);
     }
 
     this.set_random = function(key){
