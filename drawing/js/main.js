@@ -62,7 +62,7 @@ $(function(){
       init_x += tree.get_width()/scale +5;
     }
 
-
+    create_save_link();
   });
 
   function step(timestamp) {
@@ -81,3 +81,23 @@ $(function(){
 
   window.requestAnimationFrame(step);
 });
+
+function create_save_link(){
+  var svg = document.getElementById("main-svg");
+  var serial = new XMLSerializer();
+
+  var svg_str = serial.serializeToString(svg);
+
+  //add name spaces.
+  if(!svg_str.match(/^<svg[^>]+xmlns="http\:\/\/www\.w3\.org\/2000\/svg"/)){
+      svg_str = svg_str.replace(/^<svg/, '<svg xmlns="http://www.w3.org/2000/svg"');
+  }
+  if(!svg_str.match(/^<svg[^>]+"http\:\/\/www\.w3\.org\/1999\/xlink"/)){
+      svg_str = svg_str.replace(/^<svg/, '<svg xmlns:xlink="http://www.w3.org/1999/xlink"');
+  }
+
+  svg_str = '<?xml version="1.0" standalone="no"?>\r\n' + svg_str;
+
+  var $link = $('<a href="" target="_blank" class="open_link">Open</a>').attr('href', 'data:image/svg+xml;charset=utf-8,'+svg_str);
+  $('body').append($link).append('<br>');
+}

@@ -5,6 +5,12 @@ body {
 body, html{
   background:#24303A;
   height:100%;
+  text-align: center;
+  font-weight: normal;
+}
+a{
+  color:#f0f0f0;
+  text-decoration: none;
 }
 #container{
  min-width:200px;
