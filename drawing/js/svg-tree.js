@@ -18,15 +18,11 @@ var SVGTree = (function(){
       cols: 3
     }
 
-    //["rgb(", Math.round(Math.random()*255),',',Math.round(Math.random()*255),',',Math.round(Math.random()*255), ")"].join('')
-//path.transform(['t',mouse.scaledX,',',mouse.scaledY].join(''));
-
     var add_column = function(w, h, x){
 
       var r = w/2;
 
       var path_str = ['V',h,'C',x,',', h-r,',',x+r,',',h-r,',',x+r,',',h-r,'C',x+r,',',h-r,',',x+w,',',h-r,',',x+w,',',h].join('');
-      console.log(path_str);
       path.node.attributes.d.nodeValue += path_str;
     }
 
@@ -98,6 +94,10 @@ var SVGTree = (function(){
 
     this.move = function(x, y){
       path.transform( 't' + [x,y].join(',') );
+    }
+
+    this.get_width = function(){
+      return path.node.getBoundingClientRect().width;
     }
 
     return this;

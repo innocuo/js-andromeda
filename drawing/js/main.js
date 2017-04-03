@@ -1,5 +1,7 @@
 var s;
 var p_follow;
+
+var scale = 1;
 var mouse ={
   x: 0,
   y: 0,
@@ -32,7 +34,7 @@ $(function(){
 
   //this will disappear soon
   //just reference on how to add a line
-  var p2 = s.polyline(stage_x,stage_x);
+  /*var p2 = s.polyline(stage_x,stage_x);
   p2.attr({
     fill:"none",
     stroke:"#2b96b1",
@@ -41,28 +43,32 @@ $(function(){
   p_follow = s.node.createSVGPoint();
   p_follow.x = stage_x;
   p_follow.y = stage_x;
-  p2.node.points.appendItem(p_follow);
+  p2.node.points.appendItem(p_follow);*/
 
   $('#main-svg').on('click', function(e){
-    console.log(s);
-    var circle = s.circle(mouse.scaledX, mouse.scaledY,2);
+    /*var circle = s.circle(mouse.scaledX, mouse.scaledY,2);
     circle.attr({
       fill:"#2b96b1"
-    });
-//var stree=new Tree();
-var cols = 1+Math.round( Math.random() * (4-1));
-var tree = SVGTree.instantiate(s);
-tree.set('cols', cols);
-tree.set_random('fill');
-tree.draw();
-tree.move(mouse.scaledX, mouse.scaledY);
-    //createPlant();
+    });*/
+    var init_x = mouse.scaledX
+    for(var i=0;i<4;i++){
+      var cols = 1+Math.round( Math.random() * (4-1));
+      var tree = SVGTree.instantiate(s);
+      tree.set('cols', cols);
+      tree.set_random('fill');
+      tree.draw();
+      tree.move(init_x, mouse.scaledY);
+
+      init_x += tree.get_width()/scale +5;
+    }
+
+
   });
 
   function step(timestamp) {
 
     var ref_w = $(ref.node).width();
-    var scale = ref_w/( ref_radius * 2 );
+    scale = ref_w/( ref_radius * 2 );
 
     var page_width_scaled = $(s.node).width() / scale;
     mouse.scaledX = mouse.x/scale - (-stage_x + page_width_scaled/2);
