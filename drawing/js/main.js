@@ -8,13 +8,36 @@ var mouse ={
   scaledX: 0,
   scaledY: 0
 }
+var ref_radius = 10,
+stage_x = 500,
+stage_2x = stage_x * 2;
+var ref;
+
+var clear = function(){
+  s.clear();
+
+  var r = Math.round(Math.random() * 255),
+  g = Math.round(Math.random() * 255),
+  b = Math.round(Math.random() * 255);
+
+  ref = s.circle(stage_x, stage_x, ref_radius);
+  ref.attr({
+    fill:'rgb(' + [r,g,b].join(',') + ')'
+  })
+}
+
+var change_bg = function(){
+  var r = Math.round(Math.random() * 255),
+  g = Math.round(Math.random() * 255),
+  b = Math.round(Math.random() * 255);
+
+  document.body.style.backgroundColor = 'rgb(' + [r,g,b].join(',') + ')';
+}
 
 
 $(function(){
 
-  var ref_radius = 10,
-  stage_x = 500,
-  stage_2x = stage_x * 2;
+
 
   $(document).mousemove(function(e) {
       mouse.x = e.pageX;
@@ -27,7 +50,7 @@ $(function(){
 
   //place a circle that'll help us
   //find out the stage scale
-  var ref = s.circle(stage_x, stage_x, ref_radius);
+  ref = s.circle(stage_x, stage_x, ref_radius);
   ref.attr({
     fill:"#2b96b1"
   })
@@ -51,6 +74,7 @@ $(function(){
       fill:"#2b96b1"
     });*/
     var init_x = mouse.scaledX
+
     for(var i=0;i<4;i++){
       var cols = 1+Math.round( Math.random() * (4-1));
       var tree = SVGTree.instantiate(s);
@@ -78,6 +102,10 @@ $(function(){
 
     window.requestAnimationFrame(step);
   }
+
+  KBController.init();
+  KBController.register('c', clear);
+  KBController.register('b', change_bg);
 
   window.requestAnimationFrame(step);
 });

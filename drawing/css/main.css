@@ -1,9 +1,9 @@
 body {
     font: 16px/26px Helvetica, Helvetica Neue, Arial;
+    background:#24303A;
 }
 
 body, html{
-  background:#24303A;
   height:100%;
   text-align: center;
   font-weight: normal;
