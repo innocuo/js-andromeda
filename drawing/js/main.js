@@ -58,8 +58,6 @@ var tree_click = function(e){
 
     init_x += tree.get_width()/scale +5;
   }
-
-  create_save_link();
 }
 
 var path_click = function(){
@@ -129,6 +127,7 @@ $(function(){
 
   KBController.register('e', init_editor);
   KBController.register('t', init_tree);
+  KBController.register('s', create_save_link);
 
   window.requestAnimationFrame(step);
 });
