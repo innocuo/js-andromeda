@@ -34,6 +34,45 @@ var change_bg = function(){
   document.body.style.backgroundColor = 'rgb(' + [r,g,b].join(',') + ')';
 }
 
+var init_editor = function(){
+  $('#main-svg').off('.draw').on('click.draw', path_click);
+}
+var init_tree = function(){
+  $('#main-svg').off('.draw').on('click.draw', tree_click);
+}
+
+var tree_click = function(e){
+  /*var circle = s.circle(mouse.scaledX, mouse.scaledY,2);
+  circle.attr({
+    fill:"#2b96b1"
+  });*/
+  var init_x = mouse.scaledX
+
+  for(var i=0;i<4;i++){
+    var cols = 1+Math.round( Math.random() * (4-1));
+    var tree = SVGTree.instantiate(s);
+    tree.set('cols', cols);
+    tree.set_random('fill');
+    tree.draw();
+    tree.move(init_x, mouse.scaledY);
+
+    init_x += tree.get_width()/scale +5;
+  }
+
+  create_save_link();
+}
+
+var path_click = function(){
+  var path = SVGPath.get(s);
+
+  path.set('cols', 10);
+  path.set_random('fill');
+  path.draw();
+  path.add(mouse.scaledX, mouse.scaledY);
+
+//  path.move(mouse.scaledX, mouse.scaledY);
+}
+
 
 $(function(){
 
@@ -68,26 +107,7 @@ $(function(){
   p_follow.y = stage_x;
   p2.node.points.appendItem(p_follow);*/
 
-  $('#main-svg').on('click', function(e){
-    /*var circle = s.circle(mouse.scaledX, mouse.scaledY,2);
-    circle.attr({
-      fill:"#2b96b1"
-    });*/
-    var init_x = mouse.scaledX
-
-    for(var i=0;i<4;i++){
-      var cols = 1+Math.round( Math.random() * (4-1));
-      var tree = SVGTree.instantiate(s);
-      tree.set('cols', cols);
-      tree.set_random('fill');
-      tree.draw();
-      tree.move(init_x, mouse.scaledY);
-
-      init_x += tree.get_width()/scale +5;
-    }
-
-    create_save_link();
-  });
+  $('#main-svg').on('click.draw', tree_click);
 
   function step(timestamp) {
 
@@ -106,6 +126,9 @@ $(function(){
   KBController.init();
   KBController.register('c', clear);
   KBController.register('b', change_bg);
+
+  KBController.register('e', init_editor);
+  KBController.register('t', init_tree);
 
   window.requestAnimationFrame(step);
 });
