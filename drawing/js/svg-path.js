@@ -6,7 +6,6 @@ var SVGPath = (function(){
 
     var path;
     var properties = {
-      fill: 'rgb(0,0,0)',
       stroke: 'rgb(255,255,255)',
       strokeWidth: 2,
       min_h: 10,
@@ -44,7 +43,7 @@ var SVGPath = (function(){
 
       path = paper.path("M0,0");
       path.attr({
-        fill: properties.fill,
+        fill: 'none',
         stroke: properties.stroke,
         strokeWidth: properties.strokeWidth
       });
@@ -78,11 +77,6 @@ var SVGPath = (function(){
           var r = random_int(255),
               g = random_int(255),
               b = random_int(255);
-          properties['fill'] = 'rgb('+[r,g,b].join(',')+')';
-
-          r = lighten(r, 30);
-          g = lighten(g, 30);
-          b = lighten(b, 30);
 
           properties['stroke'] = 'rgb('+[r,g,b].join(',')+')';
 
