@@ -13,7 +13,9 @@ stage_x = 500,
 stage_2x = stage_x * 2;
 var ref;
 
+
 var clear = function(){
+
   s.clear();
 
   var r = Math.round(Math.random() * 255),
@@ -26,7 +28,9 @@ var clear = function(){
   })
 }
 
+
 var change_bg = function(){
+
   var r = Math.round(Math.random() * 255),
   g = Math.round(Math.random() * 255),
   b = Math.round(Math.random() * 255);
@@ -34,18 +38,20 @@ var change_bg = function(){
   document.body.style.backgroundColor = 'rgb(' + [r,g,b].join(',') + ')';
 }
 
+
 var init_editor = function(){
+
   $('#main-svg').off('.draw').on('click.draw', path_click);
 }
+
+
 var init_tree = function(){
+
   $('#main-svg').off('.draw').on('click.draw', tree_click);
 }
 
 var tree_click = function(e){
-  /*var circle = s.circle(mouse.scaledX, mouse.scaledY,2);
-  circle.attr({
-    fill:"#2b96b1"
-  });*/
+
   var init_x = mouse.scaledX
 
   for(var i=0;i<4;i++){
@@ -60,26 +66,24 @@ var tree_click = function(e){
   }
 }
 
+
 var path_click = function(){
+
   var path = SVGPath.get(s);
 
   path.set('cols', 10);
   path.set_random('fill');
   path.draw();
   path.add(mouse.scaledX, mouse.scaledY);
-
-//  path.move(mouse.scaledX, mouse.scaledY);
 }
 
 
 $(function(){
 
-
-
   $(document).mousemove(function(e) {
       mouse.x = e.pageX;
       mouse.y = e.pageY;
-  }).mouseover();
+  });
 
   //snap, to controll all things svg
   s = Snap('#main-svg');
@@ -133,6 +137,7 @@ $(function(){
 });
 
 function create_save_link(){
+  
   var svg = document.getElementById("main-svg");
   var serial = new XMLSerializer();
 
