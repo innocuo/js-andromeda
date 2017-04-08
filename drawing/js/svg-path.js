@@ -18,6 +18,8 @@ var SVGPath = (function(){
       init_y:0
     }
 
+    var points = [];
+
     var add_column = function(w, h, x){
 
       var r = w/2;
@@ -88,16 +90,61 @@ var SVGPath = (function(){
       }
     }
 
+    this.draw_horizontal = function( x ){
+
+      var path_str = 'H'+x;
+      path.node.attributes.d.nodeValue += path_str;
+
+      points.push({ 'x': x, 'y': points[points.length-1].y });
+    }
+
+    this.draw_vertical = function( y ){
+
+      var path_str = 'V'+y;
+      path.node.attributes.d.nodeValue += path_str;
+
+      points.push({ 'x': points[points.length-1].x, 'y': y });
+    }
+
+    this.curve_to_vertical = function(){
+
+    }
+
+    this.curve_to_horizontal = function(){
+
+    }
+
     this.add = function(x, y){
+
       if( !path ){
         path = paper.path("M0,0");
-        path.transform( 't' + [x,y].join(',') );
-        properties.init_x = x;
-        properties.init_y = y;
+
+        properties.init_x = Math.round( x );
+        properties.init_y = Math.round( y );
+
+        path.transform( 't' + [properties.init_x, properties.init_y].join(',') );
+        points.push({x: 0, y: 0 });
       }else{
-        console.log(path.node.attributes.d.nodeValue)
+        var new_x = Math.round( x ) - properties.init_x,
+            new_y = Math.round( y ) - properties.init_y;
+
+        var dif_x = Math.abs( new_x - points[points.length-1].x ),
+            dif_y = Math.abs( new_y - points[points.length-1].y );
+
+        var path_str;
+
+        if( dif_x > dif_y ){
+          console.log('draw horizontal')
+          this.draw_horizontal( new_x);
+        }else{
+          console.log('draw vertical')
+          this.draw_vertical( new_y );
+        }
+
+        /*
         var path_str = 'L'+[x - properties.init_x, y - properties.init_y].join(' ');
         path.node.attributes.d.nodeValue += path_str;
+        */
       }
     }
 
