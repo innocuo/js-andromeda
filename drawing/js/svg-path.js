@@ -4,7 +4,8 @@ var SVGPath = (function(){
 
   var Path = function(){
 
-    var path;
+    var path = null;
+
     var properties = {
       stroke: 'rgb(255,255,255)',
       strokeWidth: 2,
@@ -12,7 +13,9 @@ var SVGPath = (function(){
       max_h: 50,
       min_r: 20,
       max_r: 40,
-      cols: 3
+      cols: 3,
+      init_x:0,
+      init_y:0
     }
 
     var add_column = function(w, h, x){
@@ -23,9 +26,10 @@ var SVGPath = (function(){
       path.node.attributes.d.nodeValue += path_str;
     }
 
-    var end_draw = function(){
-      var path_str = 'V0H0';
+    this.end_draw = function(){
+      var path_str = 'L 0 0';
       path.node.attributes.d.nodeValue += path_str;
+      this.clear();
     }
 
     var random_int = function( val ){
@@ -41,25 +45,25 @@ var SVGPath = (function(){
 
     this.draw = function(){
 
-      path = paper.path("M0,0");
+      //path = paper.path("M0,0");
       path.attr({
         fill: 'none',
         stroke: properties.stroke,
         strokeWidth: properties.strokeWidth
       });
 
-      var last_pos = 0;
-      for(var i=0; i<properties.cols; i++){
-        var w = properties.min_r + (Math.random() * (properties.max_r-properties.min_r) );
-        var h = -1 * ( properties.min_h + Math.random() * (properties.max_h-properties.min_h) );
+      //var last_pos = 0;
+      //for(var i=0; i<properties.cols; i++){
+      //  var w = properties.min_r + (Math.random() * (properties.max_r-properties.min_r) );
+      //  var h = -1 * ( properties.min_h + Math.random() * (properties.max_h-properties.min_h) );
 
-        w = Math.round(w);
-        h = Math.round(h);
-        add_column(w, h, last_pos);
-        last_pos += w;
-      }
+      //   w = Math.round(w);
+      //   h = Math.round(h);
+      //   add_column(w, h, last_pos);
+      //   last_pos += w;
+      // }
 
-      end_draw();
+      //end_draw();
     }
 
     this.set = function(key, value){
@@ -73,7 +77,7 @@ var SVGPath = (function(){
 
     this.set_random = function(key){
       switch(key){
-        case 'fill':
+        case 'stroke':
           var r = random_int(255),
               g = random_int(255),
               b = random_int(255);
@@ -85,11 +89,24 @@ var SVGPath = (function(){
     }
 
     this.add = function(x, y){
-      path.transform( 't' + [x,y].join(',') );
+      if( !path ){
+        path = paper.path("M0,0");
+        path.transform( 't' + [x,y].join(',') );
+        properties.init_x = x;
+        properties.init_y = y;
+      }else{
+        console.log(path.node.attributes.d.nodeValue)
+        var path_str = 'L'+[x - properties.init_x, y - properties.init_y].join(' ');
+        path.node.attributes.d.nodeValue += path_str;
+      }
     }
 
     this.get_width = function(){
       return path.node.getBoundingClientRect().width;
+    }
+
+    this.clear = function(){
+      path = null;
     }
 
     return this;
@@ -102,6 +119,19 @@ var SVGPath = (function(){
         main_path = new Path();
       }
       return main_path;
+    },
+    clear: function(){
+      if (main_path){
+        main_path.clear();
+        return main_path;
+      }
+      return null;
+    },
+    close: function(){
+      if (main_path){
+        main_path.end_draw();
+        return main_path;
+      }
     }
   };
 })();

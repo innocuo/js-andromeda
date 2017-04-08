@@ -18,6 +18,10 @@ var clear = function(){
 
   s.clear();
 
+  var path = SVGPath.clear();
+  if(path)
+    path.set_random('stroke');
+
   var r = Math.round(Math.random() * 255),
   g = Math.round(Math.random() * 255),
   b = Math.round(Math.random() * 255);
@@ -42,6 +46,12 @@ var change_bg = function(){
 var init_editor = function(){
 
   $('#main-svg').off('.draw').on('click.draw', path_click);
+
+  var path = SVGPath.get(s);
+  path.clear();
+  path.set('cols', 10);
+  path.set_random('stroke');
+
 }
 
 
@@ -71,10 +81,8 @@ var path_click = function(){
 
   var path = SVGPath.get(s);
 
-  path.set('cols', 10);
-  path.set_random('fill');
-  path.draw();
   path.add(mouse.scaledX, mouse.scaledY);
+  path.draw();
 }
 
 
@@ -109,7 +117,7 @@ $(function(){
   p_follow.y = stage_x;
   p2.node.points.appendItem(p_follow);*/
 
-  $('#main-svg').on('click.draw', tree_click);
+  init_editor();
 
   function step(timestamp) {
 
@@ -133,11 +141,14 @@ $(function(){
   KBController.register('t', init_tree);
   KBController.register('s', create_save_link);
 
+  KBController.register('x', SVGPath.clear);
+  KBController.register('p', SVGPath.close);
+
   window.requestAnimationFrame(step);
 });
 
 function create_save_link(){
-  
+
   var svg = document.getElementById("main-svg");
   var serial = new XMLSerializer();
 
