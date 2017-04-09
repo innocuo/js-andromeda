@@ -15,7 +15,8 @@ var SVGPath = (function(){
       max_r: 40,
       cols: 3,
       init_x:0,
-      init_y:0
+      init_y:0,
+      radius:10
     }
 
     var points = [];
@@ -92,25 +93,45 @@ var SVGPath = (function(){
 
     this.draw_horizontal = function( x ){
 
+      var prev_point = points[points.length-1];
+      var dif = x-prev_point.x;
+
       var path_str = 'H'+x;
       path.node.attributes.d.nodeValue += path_str;
 
-      points.push({ 'x': x, 'y': points[points.length-1].y });
+      points.push({ 'x': x, 'y': prev_point.y, dir: 'H', dif: dif });
     }
 
     this.draw_vertical = function( y ){
 
+      var prev_point = points[points.length-1];
+      var dif = y-prev_point.y;
+
       var path_str = 'V'+y;
       path.node.attributes.d.nodeValue += path_str;
 
-      points.push({ 'x': points[points.length-1].x, 'y': y });
+      points.push({ 'x': points[points.length-1].x, 'y': y, dir: 'V', dif: dif });
     }
 
-    this.curve_to_vertical = function(){
+    this.turn_to_vertical = function( prev_point, dif_y, radius ){
+
+      var dir_x = (prev_point.dif>0)? 1:-1;
+      var dir_y = (dif_y - prev_point.y >0)? 1:-1;
+      var path_str = 'C'+[prev_point.x, prev_point.y, (prev_point.x+(radius*dir_x) ), (prev_point.y), (prev_point.x+(radius*dir_x) ), (prev_point.y+(radius*dir_y))].join(',');
+      path.node.attributes.d.nodeValue += path_str;
+
+      points.push({ 'x': (prev_point.x+(radius*dir_x) ), 'y': (prev_point.y+(radius*dir_y)), dir: 'V', dif: dir_y });
 
     }
 
-    this.curve_to_horizontal = function(){
+    this.turn_to_horizontal = function( prev_point, dif_x, radius){
+
+      var dir_x = (dif_x - prev_point.x >0)? 1:-1;
+      var dir_y = (prev_point.dif>0)? 1:-1;
+      var path_str = 'C'+[prev_point.x, prev_point.y, (prev_point.x ), (prev_point.y+(radius*dir_y)), (prev_point.x+(radius*dir_x) ), (prev_point.y+(radius*dir_y))].join(',');
+      path.node.attributes.d.nodeValue += path_str;
+
+      points.push({ 'x': (prev_point.x+(radius*dir_x) ), 'y': (prev_point.y+(radius*dir_y)), dir: 'H', dif: dir_x });
 
     }
 
@@ -123,21 +144,29 @@ var SVGPath = (function(){
         properties.init_y = Math.round( y );
 
         path.transform( 't' + [properties.init_x, properties.init_y].join(',') );
-        points.push({x: 0, y: 0 });
+        points.push({x: 0, y: 0, dir: null });
       }else{
         var new_x = Math.round( x ) - properties.init_x,
             new_y = Math.round( y ) - properties.init_y;
 
-        var dif_x = Math.abs( new_x - points[points.length-1].x ),
-            dif_y = Math.abs( new_y - points[points.length-1].y );
+        var prev_point = points[points.length-1];
+        var dif_x = Math.abs( new_x - prev_point.x ),
+            dif_y = Math.abs( new_y - prev_point.y );
 
         var path_str;
 
         if( dif_x > dif_y ){
           console.log('draw horizontal')
+
+          if(prev_point.dir == 'V'){
+            this.turn_to_horizontal(prev_point, new_x, properties.radius);
+          }
           this.draw_horizontal( new_x);
         }else{
           console.log('draw vertical')
+          if(prev_point.dir == 'H'){
+            this.turn_to_vertical(prev_point, new_y, properties.radius);
+          }
           this.draw_vertical( new_y );
         }
 
