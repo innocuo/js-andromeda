@@ -92,6 +92,7 @@ var SVGPath = (function(){
     }
 
     this.redraw = function(){
+      if( !path ) return ;
 
       path.node.attributes.d.nodeValue = '';
       var new_path = [];
@@ -213,6 +214,7 @@ var SVGPath = (function(){
 
     this.clear = function(){
       path = null;
+      points = [];
     }
 
     this.undo = function(){
