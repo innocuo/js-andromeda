@@ -156,16 +156,34 @@ var SVGPath = (function(){
         var path_str;
 
         if( dif_x > dif_y ){
-          console.log('draw horizontal')
+          console.log('draw horizontal',prev_point,new_x)
 
           if(prev_point.dir == 'V'){
             this.turn_to_horizontal(prev_point, new_x, properties.radius);
+          }else{
+            //if it was going right, but now want to draw left
+            if(
+              prev_point.dif > 0 && new_x - prev_point.x < 0 ||
+              prev_point.dif < 0 && new_x - prev_point.x > 0
+            ){
+              this.turn_to_vertical(prev_point, new_y, properties.radius);
+              this.turn_to_horizontal(points[points.length-1], new_x, properties.radius);
+            }
           }
           this.draw_horizontal( new_x);
         }else{
           console.log('draw vertical')
           if(prev_point.dir == 'H'){
             this.turn_to_vertical(prev_point, new_y, properties.radius);
+          }else{
+            //if it was going up, but now want to draw down
+            if(
+              prev_point.dif > 0 && new_y - prev_point.y < 0 ||
+              prev_point.dif < 0 && new_y - prev_point.y > 0
+            ){
+              this.turn_to_horizontal(prev_point, new_x, properties.radius);
+              this.turn_to_vertical(points[points.length-1], new_y, properties.radius);
+            }
           }
           this.draw_vertical( new_y );
         }
