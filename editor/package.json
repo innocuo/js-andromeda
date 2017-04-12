@@ -1,0 +1,15 @@
+{
+  "name": "andromeda-editor",
+  "version": "0.0.2",
+  "description": "Web tool to draw vector lines",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "svg",
+    "javascript"
+  ],
+  "author": "Luis Orozco",
+  "license": "ISC"
+}
