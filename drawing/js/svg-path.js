@@ -91,6 +91,17 @@ var SVGPath = (function(){
       }
     }
 
+    this.redraw = function(){
+
+      path.node.attributes.d.nodeValue = '';
+      var new_path = [];
+      $.each(points, function( idx, val){
+        new_path.push(val.str);
+      });
+      path.node.attributes.d.nodeValue = new_path.join('');
+
+    }
+
     this.draw_horizontal = function( x ){
 
       var prev_point = points[points.length-1];
@@ -99,7 +110,7 @@ var SVGPath = (function(){
       var path_str = 'H'+x;
       path.node.attributes.d.nodeValue += path_str;
 
-      points.push({ 'x': x, 'y': prev_point.y, dir: 'H', dif: dif });
+      points.push({ 'x': x, 'y': prev_point.y, dir: 'H', dif: dif, str: path_str });
     }
 
     this.draw_vertical = function( y ){
@@ -110,7 +121,7 @@ var SVGPath = (function(){
       var path_str = 'V'+y;
       path.node.attributes.d.nodeValue += path_str;
 
-      points.push({ 'x': points[points.length-1].x, 'y': y, dir: 'V', dif: dif });
+      points.push({ 'x': points[points.length-1].x, 'y': y, dir: 'V', dif: dif, str: path_str });
     }
 
     this.turn_to_vertical = function( prev_point, dif_y, radius ){
@@ -120,7 +131,7 @@ var SVGPath = (function(){
       var path_str = 'C'+[prev_point.x, prev_point.y, (prev_point.x+(radius*dir_x) ), (prev_point.y), (prev_point.x+(radius*dir_x) ), (prev_point.y+(radius*dir_y))].join(',');
       path.node.attributes.d.nodeValue += path_str;
 
-      points.push({ 'x': (prev_point.x+(radius*dir_x) ), 'y': (prev_point.y+(radius*dir_y)), dir: 'V', dif: dir_y });
+      points.push({ 'x': (prev_point.x+(radius*dir_x) ), 'y': (prev_point.y+(radius*dir_y)), dir: 'V', dif: dir_y, str: path_str });
 
     }
 
@@ -131,20 +142,22 @@ var SVGPath = (function(){
       var path_str = 'C'+[prev_point.x, prev_point.y, (prev_point.x ), (prev_point.y+(radius*dir_y)), (prev_point.x+(radius*dir_x) ), (prev_point.y+(radius*dir_y))].join(',');
       path.node.attributes.d.nodeValue += path_str;
 
-      points.push({ 'x': (prev_point.x+(radius*dir_x) ), 'y': (prev_point.y+(radius*dir_y)), dir: 'H', dif: dir_x });
+      points.push({ 'x': (prev_point.x+(radius*dir_x) ), 'y': (prev_point.y+(radius*dir_y)), dir: 'H', dif: dir_x, str: path_str });
 
     }
 
     this.add = function(x, y){
 
-      if( !path ){
-        path = paper.path("M0,0");
+      var path_str;
+      if( !path || points.length == 0 ){
+        path_str = "M0,0"
+        path = paper.path( path_str );
 
         properties.init_x = Math.round( x );
         properties.init_y = Math.round( y );
 
         path.transform( 't' + [properties.init_x, properties.init_y].join(',') );
-        points.push({x: 0, y: 0, dir: null });
+        points.push({x: 0, y: 0, dir: null, str: path_str });
       }else{
         var new_x = Math.round( x ) - properties.init_x,
             new_y = Math.round( y ) - properties.init_y;
@@ -153,10 +166,8 @@ var SVGPath = (function(){
         var dif_x = Math.abs( new_x - prev_point.x ),
             dif_y = Math.abs( new_y - prev_point.y );
 
-        var path_str;
-
         if( dif_x > dif_y ){
-          console.log('draw horizontal',prev_point,new_x)
+          console.log('draw horizontal')
 
           if(prev_point.dir == 'V'){
             this.turn_to_horizontal(prev_point, new_x, properties.radius);
@@ -188,6 +199,7 @@ var SVGPath = (function(){
           this.draw_vertical( new_y );
         }
 
+        console.log(points);
         /*
         var path_str = 'L'+[x - properties.init_x, y - properties.init_y].join(' ');
         path.node.attributes.d.nodeValue += path_str;
@@ -201,6 +213,11 @@ var SVGPath = (function(){
 
     this.clear = function(){
       path = null;
+    }
+
+    this.undo = function(){
+      points.pop();
+      this.redraw();
     }
 
     return this;
@@ -225,6 +242,11 @@ var SVGPath = (function(){
       if (main_path){
         main_path.end_draw();
         return main_path;
+      }
+    },
+    undo: function(){
+      if(main_path){
+        main_path.undo();
       }
     }
   };

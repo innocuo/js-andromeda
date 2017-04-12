@@ -143,6 +143,7 @@ $(function(){
 
   KBController.register('x', SVGPath.clear);
   KBController.register('p', SVGPath.close);
+  KBController.register('u', SVGPath.undo);
 
   window.requestAnimationFrame(step);
 });
