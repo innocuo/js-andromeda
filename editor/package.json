@@ -4,12 +4,22 @@
   "description": "Web tool to draw vector lines",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "webpack"
   },
   "keywords": [
     "svg",
     "javascript"
   ],
   "author": "Luis Orozco",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "lodash": "^4.17.4",
+    "moonjs": "^0.8.0"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-util": "^3.0.8",
+    "gulp-watch": "^4.3.11",
+    "webpack": "^2.3.3"
+  }
 }
