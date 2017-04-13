@@ -1,0 +1,25 @@
+@import 'normalize';
+
+body {
+    font: 16px/26px Helvetica, Helvetica Neue, Arial;
+    background:#222;
+}
+
+body, html{
+  height:100%;
+  text-align: center;
+  font-weight: normal;
+  color:#f0f0f0;
+}
+a{
+  color:#f0f0f0;
+  text-decoration: none;
+}
+#container{
+ min-width:200px;
+  height:100%;
+}
+svg{
+    width:100%;
+    height:100%;
+}
