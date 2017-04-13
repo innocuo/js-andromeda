@@ -1,5 +1,5 @@
 var Moon = require('moonjs');
 
 Moon.component('sidebar', {
-  template: "<div>this is a sidebar</div>"
+  template: "<div class=\"sidebar\">this is a sidebar</div>"
 });

@@ -47,7 +47,7 @@ gulp.task('sass', function () {
 
 // Gulp Watch Task
 gulp.task('watch', function () {
-   //gulp.watch('./src/**/*', ['build']);
+   gulp.watch('./src/**/*', ['build']);
    gulp.watch('./src/sass/**/*', ['sass']);
 });
 

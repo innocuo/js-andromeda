@@ -2,8 +2,6 @@ var Moon = require('moonjs');
 import 'components/sidebar';
 import 'components/svg-stage';
 
-
-
 var app = new Moon({
   el: "#app1",
   stemplate:"",
@@ -11,7 +9,3 @@ var app = new Moon({
     msg: "test"
   }
 });
-
-setInterval(function(){
-  //app.set('msg', Math.random())
-}, 200)

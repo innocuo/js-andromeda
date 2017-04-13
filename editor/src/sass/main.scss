@@ -1,8 +1,7 @@
 @import 'normalize';
-
+$bgcolor :#222;
 body {
-    font: 16px/26px Helvetica, Helvetica Neue, Arial;
-    background:#222;
+  background: $bgcolor;
 }
 
 body, html{
@@ -15,11 +14,23 @@ a{
   color:#f0f0f0;
   text-decoration: none;
 }
-#container{
+#app1{
  min-width:200px;
   height:100%;
 }
 svg{
-    width:100%;
+    width:75%;
     height:100%;
+    border:1px solid blue;
+    float: right;
+}
+
+
+.sidebar{
+  background: lighten($bgcolor, 10%);
+  width:24%;
+  height: 100%;
+  float:left;
+  font-size:1rem;
+  text-align: left;
 }
