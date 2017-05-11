@@ -1,0 +1,31 @@
+.sidebar{
+  background: $c_sidebar;
+  width:24%;
+  max-width: 180px;
+  height: 100%;
+  font-size:0.8rem;
+  text-align: left;
+
+  padding: 15px;
+
+  .sidebar-options{
+    margin:10px 0;
+    padding:0;
+    list-style: none;
+
+    li{
+      margin-bottom: 5px;
+      label{
+        font-size:.7rem;
+        color: lighten($c_sidebar, 40%);
+      }
+      input[type=text]{
+        background: lighten($c_sidebar, 20%);
+        border:0;
+        width:100%;
+        padding:3px;
+        color: lighten($c_sidebar, 60%);
+      }
+    }
+  }
+}
