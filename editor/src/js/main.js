@@ -1,11 +1,11 @@
-var Moon = require('moonjs');
+import Vue from 'vue'
+
 import 'components/sidebar';
 import 'components/svg-stage';
 
-var app = new Moon({
+var app = new Vue({
   el: "#app1",
-  stemplate:"",
   data: {
-    msg: "test"
+    msg: "editor"
   }
 });

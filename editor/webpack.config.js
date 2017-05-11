@@ -5,7 +5,10 @@ module.exports = {
     devtool: 'source-map',
     resolve:{
       modules: [path.resolve(__dirname, "src/js"), "node_modules"],
-      extensions: ['*','.js']
+      extensions: ['*','.js'],
+      alias: {
+        vue: 'vue/dist/vue.js'
+      }
     },
     output: {
         filename: 'bundle.js',

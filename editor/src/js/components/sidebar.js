@@ -1,5 +1,5 @@
-var Moon = require('moonjs');
+var Vue = require('vue');
 
-Moon.component('sidebar', {
-  template: "<div class=\"sidebar\">this is a sidebar</div>"
+Vue.component('sidebar', {
+  template: "<div class=\"sidebar\"><h3>Options</h3><slot>menu</slot></div>"
 });
