@@ -15,7 +15,7 @@
   "license": "ISC",
   "dependencies": {
     "lodash": "^4.17.4",
-    "moonjs": "^0.8.0"
+    "moonjs": "^0.9.0"
   },
   "devDependencies": {
     "gulp": "^3.9.1",

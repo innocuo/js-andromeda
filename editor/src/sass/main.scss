@@ -1,7 +1,15 @@
 @import 'normalize';
-$bgcolor :#222;
+@import 'variables';
+
+html {
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
 body {
-  background: $bgcolor;
+  background: $c_bg;
 }
 
 body, html{
@@ -17,20 +25,29 @@ a{
 #app1{
  min-width:200px;
   height:100%;
+  display: flex;
 }
-svg{
+.svg-container{
     width:75%;
     height:100%;
-    border:1px solid blue;
-    float: right;
+    flex: 1;
+
+    svg{
+      width:100%;
+      height: 100%;
+    }
 }
+
 
 
 .sidebar{
-  background: lighten($bgcolor, 10%);
+  background: $c_sidebar;
   width:24%;
+  max-width: 180px;
   height: 100%;
-  float:left;
-  font-size:1rem;
+  font-size:0.8rem;
   text-align: left;
+
+  padding: 15px;
+
 }
