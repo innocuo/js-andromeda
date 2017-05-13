@@ -47,14 +47,15 @@ Vue.component('svg-stage', {
 
       const s_bbox = this.s.node.getBoundingClientRect();
       var page_width_scaled = s_bbox.width / this.scale;
-      this.mouse.scaledX = this.mouse.x/this.scale - (-this.stage_x + page_width_scaled/2);
+      this.mouse.scaledX = (this.mouse.x - s_bbox.left)/this.scale - (-this.stage_x + page_width_scaled/2);
 
       var page_height_scaled = s_bbox.height / this.scale;
-      this.mouse.scaledY = this.mouse.y/this.scale - (-this.stage_x + page_height_scaled/2);
+      this.mouse.scaledY = (this.mouse.y - s_bbox.top)/this.scale - (-this.stage_x + page_height_scaled/2);
 
       window.requestAnimationFrame(this.step);
     },
     move: function(e){
+
       this.mouse.x = e.pageX;
       this.mouse.y = e.pageY;
     },
