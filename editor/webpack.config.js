@@ -9,6 +9,20 @@ module.exports = {
       alias: {
         vue: 'vue/dist/vue.js'
       }
+
+    },
+    module: {
+      loaders: [
+        {
+          test: /\.js$/,
+          loader: 'babel-loader',
+
+          exclude: /node_modules/,
+          query:{
+            presets: ['es2015','stage-2']
+          }
+        }
+      ]
     },
     output: {
         filename: 'bundle.js',

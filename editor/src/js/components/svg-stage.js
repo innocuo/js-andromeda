@@ -1,9 +1,11 @@
-var Vue = require('vue');
+var Vue = require('vue')
+import {mapState} from 'vuex'
+
 import SVGPath from '../andromeda/svg-path';
 const Snap = require(`imports-loader?this=>window,fix=>module.exports=0!snapsvg/dist/snap.svg.js`);
 
 Vue.component('svg-stage', {
-  template: "<div class='svg-container'><svg id='main-svg' v-on:click=\"click\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\"></svg></div>",
+  template: "<div class='svg-container'>{{ count }}<svg id='main-svg' v-on:click=\"click\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\"></svg></div>",
   data: function(){
     const stage_x = 500;
 
@@ -23,6 +25,10 @@ Vue.component('svg-stage', {
       ref: null
     }
   },
+  computed: mapState([
+    'count','lineColor','lineRadius'
+  ]),
+
   created: function(){
     window.addEventListener('mousemove',this.move);
   },
@@ -60,8 +66,10 @@ Vue.component('svg-stage', {
       this.mouse.y = e.pageY;
     },
     click: function(e){
-
+        this.$store.commit('increment')
         var path = SVGPath.get(this.s);
+        path.set('radius', this.lineRadius);
+        path.set('stroke', this.lineColor);
 
         path.add(this.mouse.scaledX, this.mouse.scaledY);
         path.draw();
