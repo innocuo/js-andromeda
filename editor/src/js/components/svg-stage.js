@@ -40,7 +40,7 @@ Vue.component('svg-stage', {
     //find out the stage scale
     this.ref = this.s.circle(this.stage_x, this.stage_x, this.ref_radius);
     this.ref.attr({
-      fill:"#2b96b1"
+      fill:"#292929"
     });
 
     window.requestAnimationFrame(this.step);

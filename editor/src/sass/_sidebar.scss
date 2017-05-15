@@ -6,7 +6,8 @@
   font-size:0.8rem;
   text-align: left;
 
-  padding: 15px;
+  display: flex;
+  flex-direction: column;
 
   .sidebar-options{
     margin:10px 0;
@@ -27,5 +28,17 @@
         color: lighten($c_sidebar, 60%);
       }
     }
+  }
+
+  .sidebar-top{
+    padding: 12px;
+  }
+
+  .sidebar-layers{
+    background: darken($c_sidebar, 10%);
+    margin-top: auto;
+    padding:20px;
+    font-size:.7rem;
+    text-align: center;
   }
 }

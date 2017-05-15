@@ -12,12 +12,16 @@
     <body>
       <div id="app1">
         <sidebar>
-          {{msg}}
+          <div class="sidebar-top">
+            {{msg}}
 
-          <ul class="sidebar-options">
-            <li><sidebar-option label="Border Radius" option="lineRadius"/></li>
-            <li><sidebar-option label="Line Color" option="lineColor"/></li>
-          </ul>
+            <ul class="sidebar-options">
+              <li><sidebar-option label="Border Radius" option="lineRadius"/></li>
+              <li><sidebar-option label="Line Color" option="lineColor"/></li>
+            </ul>
+          </div>
+
+          <layers>Layers go here</layers>
         </sidebar>
         <svg-stage></svg-stage>
       </div>
