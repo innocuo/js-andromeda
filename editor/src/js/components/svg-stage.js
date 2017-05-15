@@ -5,7 +5,7 @@ import SVGPath from '../andromeda/svg-path';
 const Snap = require(`imports-loader?this=>window,fix=>module.exports=0!snapsvg/dist/snap.svg.js`);
 
 Vue.component('svg-stage', {
-  template: "<div class='svg-container'>{{ count }}<svg id='main-svg' v-on:click=\"click\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\"></svg></div>",
+  template: "<div class='svg-container'><svg id='main-svg' v-on:click=\"click\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\"></svg></div>",
   data: function(){
     const stage_x = 500;
 
