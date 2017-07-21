@@ -6,7 +6,7 @@ Vue.use( Vuex )
 const store  = new Vuex.Store({
     state:{
       count : 0,
-      lineColor: 'rgb(200,200,200)',
+      lineColor: 'rgb(100,200,200)',
       lineRadius: 1,
     },
     mutations: {

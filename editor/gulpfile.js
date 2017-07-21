@@ -7,7 +7,8 @@ var gulp = require('gulp'),
     cssBase64 = require('gulp-css-base64'),
     path = require('path'),
     webpack = require('webpack'),
-    webpackConfig = require('./webpack.config.js');
+    webpackConfig = require('./webpack.config.js'),
+    browserSync = require('browser-sync').create();
 
 
 gulp.task('build', [
@@ -28,6 +29,7 @@ gulp.task('webpack:build', function (callback) {
             timings: false,
             version: false
         }));
+        browserSync.reload();
         callback();
     });
 });
@@ -42,7 +44,8 @@ gulp.task('sass', function () {
      .pipe(cssBase64())
      .pipe(autoprefixer())
      .pipe(sourcemaps.write('./'))
-     .pipe(gulp.dest('./dist/css/'));
+     .pipe(gulp.dest('./dist/css/'))
+     .pipe(browserSync.stream({match: '**/*.css'}));
 });
 
 // Gulp Watch Task
@@ -52,5 +55,14 @@ gulp.task('watch', function () {
   gulp.watch('./src/sass/**/*', ['sass']);
 });
 
+//Gulp Browsersync
+gulp.task('browser-sync', function(){
+  browserSync.init({
+    server:{
+      baseDir: "./"
+    }
+  });
+});
+
 // Gulp Default Task
-gulp.task('default', ['watch']);
+gulp.task('default', ['browser-sync','watch']);
