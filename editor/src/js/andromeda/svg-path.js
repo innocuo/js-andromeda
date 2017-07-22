@@ -149,10 +149,16 @@ var SVGPath = (function(){
 
     this.relative_add = function(x, y){
 
-      var prev_point = points[points.length-1];
-      var next_x = properties.init_x+prev_point.x + x,
-          next_y = properties.init_y+prev_point.y + y;
+      var next_y,next_x;
 
+      if( !path || points.length == 0 ){
+        next_x = properties.center.x;
+        next_y = properties.center.y;
+      }else{
+        var prev_point = points[points.length-1];
+        next_x = properties.init_x+prev_point.x + x;
+        next_y = properties.init_y+prev_point.y + y;
+      }
       this.add(next_x, next_y);
     }
 

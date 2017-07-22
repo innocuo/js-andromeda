@@ -45,6 +45,9 @@ Vue.component('svg-stage', {
       fill:"#292929"
     });
 
+    var path = SVGPath.get(this.s);
+    path.set('center', {x: this.stage_x, y: this.stage_x});
+
     window.requestAnimationFrame(this.step);
   },
   methods:{
