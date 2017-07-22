@@ -7,7 +7,7 @@ const store  = new Vuex.Store({
     state:{
       count : 0,
       lineColor: 'rgb(150,43,40)',
-      lineRadius: 1,
+      lineRadius: 6,
     },
     mutations: {
       increment (state){

@@ -108,10 +108,25 @@ var SVGPath = (function(){
       var prev_point = points[points.length-1];
       var dif = x-prev_point.x;
 
-      var path_str = 'H'+x;
-      path.node.attributes.d.nodeValue += path_str;
 
-      points.push({ 'x': x, 'y': prev_point.y, dir: 'H', dif: dif, str: path_str });
+
+      if( prev_point.dir == 'H'){
+
+        prev_point.str = 'H' + (x);
+
+        prev_point.dif = x - (prev_point.dif + prev_point.x);
+        prev_point.x = x;
+
+        var old_value = path.node.attributes.d.nodeValue
+
+        var index_of_dir = old_value.lastIndexOf('H');
+        path.node.attributes.d.nodeValue = old_value.substring( 0, index_of_dir ) + prev_point.str;
+      }else{
+        points.push({ 'x': x, 'y': prev_point.y, dir: 'H', dif: dif, str: path_str });
+        var path_str = 'H'+x;
+        path.node.attributes.d.nodeValue += path_str;
+
+      }
     }
 
     this.draw_vertical = function( y ){
@@ -119,10 +134,23 @@ var SVGPath = (function(){
       var prev_point = points[points.length-1];
       var dif = y-prev_point.y;
 
-      var path_str = 'V'+y;
-      path.node.attributes.d.nodeValue += path_str;
+      if( prev_point.dir == 'V'){
 
-      points.push({ 'x': points[points.length-1].x, 'y': y, dir: 'V', dif: dif, str: path_str });
+        prev_point.str = 'V' + (y);
+        prev_point.dif = y - (prev_point.dif + prev_point.y);
+        prev_point.y = y;
+        //TODO: does dif need to be adjusted?
+
+        var old_value = path.node.attributes.d.nodeValue
+
+        var index_of_dir = old_value.lastIndexOf('V');
+        path.node.attributes.d.nodeValue = old_value.substring( 0, index_of_dir ) + prev_point.str;
+      }else{
+        points.push({ 'x': prev_point.x, 'y': y, dir: 'V', dif: dif, str: path_str });
+        var path_str = 'V'+y;
+        path.node.attributes.d.nodeValue += path_str;
+
+      }
     }
 
     this.turn_to_vertical = function( prev_point, dif_y, radius ){
@@ -132,7 +160,7 @@ var SVGPath = (function(){
       var path_str = 'C'+[prev_point.x, prev_point.y, (prev_point.x+(radius*dir_x) ), (prev_point.y), (prev_point.x+(radius*dir_x) ), (prev_point.y+(radius*dir_y))].join(',');
       path.node.attributes.d.nodeValue += path_str;
 
-      points.push({ 'x': (prev_point.x+(radius*dir_x) ), 'y': (prev_point.y+(radius*dir_y)), dir: 'V', dif: dir_y, str: path_str });
+      points.push({ 'x': (prev_point.x+(radius*dir_x) ), 'y': (prev_point.y+(radius*dir_y)), dir: 'CV', dif: dir_y, str: path_str });
 
     }
 
@@ -143,7 +171,7 @@ var SVGPath = (function(){
       var path_str = 'C'+[prev_point.x, prev_point.y, (prev_point.x ), (prev_point.y+(radius*dir_y)), (prev_point.x+(radius*dir_x) ), (prev_point.y+(radius*dir_y))].join(',');
       path.node.attributes.d.nodeValue += path_str;
 
-      points.push({ 'x': (prev_point.x+(radius*dir_x) ), 'y': (prev_point.y+(radius*dir_y)), dir: 'H', dif: dir_x, str: path_str });
+      points.push({ 'x': (prev_point.x+(radius*dir_x) ), 'y': (prev_point.y+(radius*dir_y)), dir: 'CH', dif: dir_x, str: path_str });
 
     }
 
@@ -185,7 +213,7 @@ var SVGPath = (function(){
         if( dif_x > dif_y ){
           console.log('draw horizontal')
 
-          if(prev_point.dir == 'V'){
+          if(prev_point.dir == 'V' || prev_point.dir == "CV"){
             this.turn_to_horizontal(prev_point, new_x, properties.radius);
           }else{
             //if it was going right, but now want to draw left
