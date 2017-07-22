@@ -112,9 +112,8 @@ var SVGPath = (function(){
 
       if( prev_point.dir == 'H'){
 
-        prev_point.str = 'H' + (x);
-
-        prev_point.dif = x - (prev_point.dif + prev_point.x);
+        prev_point.str = 'H' + x;
+        prev_point.dif = x - (prev_point.x-prev_point.dif );
         prev_point.x = x;
 
         var old_value = path.node.attributes.d.nodeValue
@@ -122,8 +121,8 @@ var SVGPath = (function(){
         var index_of_dir = old_value.lastIndexOf('H');
         path.node.attributes.d.nodeValue = old_value.substring( 0, index_of_dir ) + prev_point.str;
       }else{
-        points.push({ 'x': x, 'y': prev_point.y, dir: 'H', dif: dif, str: path_str });
         var path_str = 'H'+x;
+        points.push({ 'x': x, 'y': prev_point.y, dir: 'H', dif: dif, str: path_str });
         path.node.attributes.d.nodeValue += path_str;
 
       }
@@ -136,8 +135,8 @@ var SVGPath = (function(){
 
       if( prev_point.dir == 'V'){
 
-        prev_point.str = 'V' + (y);
-        prev_point.dif = y - (prev_point.dif + prev_point.y);
+        prev_point.str = 'V' + y;
+        prev_point.dif = y - (prev_point.y-prev_point.dif );
         prev_point.y = y;
         //TODO: does dif need to be adjusted?
 
@@ -146,8 +145,8 @@ var SVGPath = (function(){
         var index_of_dir = old_value.lastIndexOf('V');
         path.node.attributes.d.nodeValue = old_value.substring( 0, index_of_dir ) + prev_point.str;
       }else{
-        points.push({ 'x': prev_point.x, 'y': y, dir: 'V', dif: dif, str: path_str });
         var path_str = 'V'+y;
+        points.push({ 'x': prev_point.x, 'y': y, dir: 'V', dif: dif, str: path_str });
         path.node.attributes.d.nodeValue += path_str;
 
       }
@@ -244,6 +243,7 @@ var SVGPath = (function(){
         }
 
         console.log(points);
+        console.log(path.node.attributes.d.nodeValue)
         /*
         var path_str = 'L'+[x - properties.init_x, y - properties.init_y].join(' ');
         path.node.attributes.d.nodeValue += path_str;
