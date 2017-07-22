@@ -3,6 +3,7 @@ import {mapState} from 'vuex'
 
 import SVGPath from '../andromeda/svg-path';
 const Snap = require(`imports-loader?this=>window,fix=>module.exports=0!snapsvg/dist/snap.svg.js`);
+const _ = require('lodash')
 
 Vue.component('svg-stage', {
   template: "<div class='svg-container'><svg id='main-svg' v-on:click=\"click\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\"></svg></div>",
@@ -31,6 +32,7 @@ Vue.component('svg-stage', {
 
   created: function(){
     window.addEventListener('mousemove',this.move);
+    window.addEventListener('keydown', this.keyDown);
   },
   mounted: function(){
     this.s = Snap('#main-svg');
@@ -74,6 +76,34 @@ Vue.component('svg-stage', {
         path.add(this.mouse.scaledX, this.mouse.scaledY);
         path.draw();
 
+    },
+    keyDown: function(e){
+      //up, right, down, left
+      var keys = [38,39,40,37];
+
+      let key = _.indexOf(keys,e.keyCode);
+      if(key != -1){
+        var path = SVGPath.get(this.s);
+        path.set('radius', this.lineRadius);
+        path.set('stroke', this.lineColor);
+
+        switch(key){
+          case 0:
+            path.relative_add(0,-(this.lineRadius*1));
+          break;
+          case 1:
+            path.relative_add(this.lineRadius*1,0);
+          break;
+          case 2:
+            path.relative_add(0,this.lineRadius*1);
+          break;
+          case 3:
+            path.relative_add(-(this.lineRadius*1),0);
+          break;
+        }
+        path.draw();
+
+      }
     }
   }
 });
