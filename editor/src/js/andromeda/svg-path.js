@@ -159,7 +159,7 @@ var SVGPath = (function(){
       var path_str = 'C'+[prev_point.x, prev_point.y, (prev_point.x+(radius*dir_x) ), (prev_point.y), (prev_point.x+(radius*dir_x) ), (prev_point.y+(radius*dir_y))].join(',');
       path.node.attributes.d.nodeValue += path_str;
 
-      points.push({ 'x': (prev_point.x+(radius*dir_x) ), 'y': (prev_point.y+(radius*dir_y)), dir: 'CV', dif: dir_y, str: path_str });
+      points.push({ 'x': (prev_point.x+(radius*dir_x) ), 'y': (prev_point.y+(radius*dir_y)), dir: 'CV', dif: (dif_y - prev_point.y), str: path_str });
 
     }
 
@@ -170,7 +170,7 @@ var SVGPath = (function(){
       var path_str = 'C'+[prev_point.x, prev_point.y, (prev_point.x ), (prev_point.y+(radius*dir_y)), (prev_point.x+(radius*dir_x) ), (prev_point.y+(radius*dir_y))].join(',');
       path.node.attributes.d.nodeValue += path_str;
 
-      points.push({ 'x': (prev_point.x+(radius*dir_x) ), 'y': (prev_point.y+(radius*dir_y)), dir: 'CH', dif: dir_x, str: path_str });
+      points.push({ 'x': (prev_point.x+(radius*dir_x) ), 'y': (prev_point.y+(radius*dir_y)), dir: 'CH', dif: (dif_x - prev_point.x), str: path_str });
 
     }
 
@@ -209,11 +209,13 @@ var SVGPath = (function(){
         var dif_x = Math.abs( new_x - prev_point.x ),
             dif_y = Math.abs( new_y - prev_point.y );
 
+        var recheck_prev = false;
         if( dif_x > dif_y ){
           console.log('draw horizontal')
 
           if(prev_point.dir == 'V' || prev_point.dir == "CV"){
             this.turn_to_horizontal(prev_point, new_x, properties.radius);
+            recheck_prev = true;
           }else{
             //if it was going right, but now want to draw left
             if(
@@ -222,13 +224,21 @@ var SVGPath = (function(){
             ){
               this.turn_to_vertical(prev_point, new_y, properties.radius);
               this.turn_to_horizontal(points[points.length-1], new_x, properties.radius);
+              recheck_prev = true;
             }
           }
-          this.draw_horizontal( new_x);
+          if( recheck_prev ){
+            prev_point = points[points.length-1];
+            console.log(prev_point.y)
+          }
+          if(!recheck_prev || (recheck_prev && prev_point.x!=new_x))
+            this.draw_horizontal( new_x);
         }else{
           console.log('draw vertical')
-          if(prev_point.dir == 'H'){
+
+          if(prev_point.dir == 'H' || prev_point.dir == "CH"){
             this.turn_to_vertical(prev_point, new_y, properties.radius);
+            recheck_prev = true;
           }else{
             //if it was going up, but now want to draw down
             if(
@@ -237,9 +247,15 @@ var SVGPath = (function(){
             ){
               this.turn_to_horizontal(prev_point, new_x, properties.radius);
               this.turn_to_vertical(points[points.length-1], new_y, properties.radius);
+              recheck_prev = true;
             }
           }
-          this.draw_vertical( new_y );
+          if( recheck_prev ){
+            prev_point = points[points.length-1];
+            console.log(prev_point.y)
+          }
+          if(!recheck_prev || (recheck_prev && prev_point.y!=new_y))
+            this.draw_vertical( new_y );
         }
 
         console.log(points);
