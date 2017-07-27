@@ -49,13 +49,13 @@ var SVGPath = (function(){
 
     this.draw = function(){
 
-      //path = paper.path("M0,0");
-      path.attr({
-        fill: properties.fill,
-        stroke: properties.stroke,
-        strokeWidth: properties.strokeWidth
-      });
-
+      if( path ){
+        path.attr({
+          fill: properties.fill,
+          stroke: properties.stroke,
+          strokeWidth: properties.strokeWidth
+        });
+      }
       //var last_pos = 0;
       //for(var i=0; i<properties.cols; i++){
       //  var w = properties.min_r + (Math.random() * (properties.max_r-properties.min_r) );
