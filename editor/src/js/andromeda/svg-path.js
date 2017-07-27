@@ -222,9 +222,9 @@ var SVGPath = (function(){
               prev_point.dif > 0 && new_x - prev_point.x < 0 ||
               prev_point.dif < 0 && new_x - prev_point.x > 0
             ){
-              this.turn_to_vertical(prev_point, new_y, properties.radius);
-              this.turn_to_horizontal(points[points.length-1], new_x, properties.radius);
-              recheck_prev = true;
+              // this.turn_to_vertical(prev_point, new_y, properties.radius);
+              // this.turn_to_horizontal(points[points.length-1], new_x, properties.radius);
+              // recheck_prev = true;
             }
           }
           if( recheck_prev ){
@@ -245,9 +245,9 @@ var SVGPath = (function(){
               prev_point.dif > 0 && new_y - prev_point.y < 0 ||
               prev_point.dif < 0 && new_y - prev_point.y > 0
             ){
-              this.turn_to_horizontal(prev_point, new_x, properties.radius);
-              this.turn_to_vertical(points[points.length-1], new_y, properties.radius);
-              recheck_prev = true;
+              // this.turn_to_horizontal(prev_point, new_x, properties.radius);
+              // this.turn_to_vertical(points[points.length-1], new_y, properties.radius);
+              // recheck_prev = true;
             }
           }
           if( recheck_prev ){
