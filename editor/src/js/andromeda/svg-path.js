@@ -16,7 +16,8 @@ var SVGPath = (function(){
       cols: 3,
       init_x:0,
       init_y:0,
-      radius:10
+      radius:10,
+      fill: 'none'
     }
 
     var points = [];
@@ -50,7 +51,7 @@ var SVGPath = (function(){
 
       //path = paper.path("M0,0");
       path.attr({
-        fill: 'none',
+        fill: properties.fill,
         stroke: properties.stroke,
         strokeWidth: properties.strokeWidth
       });

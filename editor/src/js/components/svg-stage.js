@@ -27,7 +27,7 @@ Vue.component('svg-stage', {
     }
   },
   computed: mapState([
-    'count','lineColor','lineRadius'
+    'count','lineColor','lineRadius','fillColor'
   ]),
 
   created: function(){
@@ -75,6 +75,7 @@ Vue.component('svg-stage', {
         var path = SVGPath.get(this.s);
         path.set('radius', this.lineRadius);
         path.set('stroke', this.lineColor);
+        path.set('fill', this.fillColor);
 
         path.add(this.mouse.scaledX, this.mouse.scaledY);
         path.draw();
@@ -89,6 +90,7 @@ Vue.component('svg-stage', {
         var path = SVGPath.get(this.s);
         path.set('radius', this.lineRadius);
         path.set('stroke', this.lineColor);
+        path.set('fill', this.fillColor);
 
         switch(key){
           case 0:
