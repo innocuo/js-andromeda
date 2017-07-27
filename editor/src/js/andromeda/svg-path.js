@@ -175,19 +175,64 @@ var SVGPath = (function(){
 
     }
 
-    this.relative_add = function(x, y){
+    this.relative_add = function( dir, step){
 
-      var next_y,next_x;
+      var path_str;
 
       if( !path || points.length == 0 ){
-        next_x = properties.center.x;
-        next_y = properties.center.y;
-      }else{
-        var prev_point = points[points.length-1];
-        next_x = properties.init_x+prev_point.x + x;
-        next_y = properties.init_y+prev_point.y + y;
+        path_str = "M0,0"
+        path = paper.path( path_str );
+        points.push({x: 0, y: 0, dir: '0', str: path_str });
+
+        properties.init_x = properties.center.x;
+        properties.init_y = properties.center.y;
+
+        path.transform( 't' + [properties.init_x, properties.init_y].join(',') );
       }
-      this.add(next_x, next_y);
+
+      var prev_point = points[points.length-1];
+
+      if( prev_point.dir.toLowerCase() == dir){
+        path_str = dir + ( step + prev_point.step);
+        prev_point.step = ( step + prev_point.step)
+        prev_point.str = path_str;
+
+        if(prev_point.step == 0){
+          var old_value = path.node.attributes.d.nodeValue
+
+          var index_of_dir = old_value.lastIndexOf(dir);
+          path.node.attributes.d.nodeValue = old_value.substring( 0, index_of_dir );
+          points.pop();
+        }else{
+          var old_value = path.node.attributes.d.nodeValue
+
+          var index_of_dir = old_value.lastIndexOf(dir);
+          path.node.attributes.d.nodeValue = old_value.substring( 0, index_of_dir ) + prev_point.str;
+        }
+
+
+      }else{
+        path_str = dir + step;
+        points.push({ step: step, dir: dir, dif: 0, str: path_str });
+        path.node.attributes.d.nodeValue += path_str;
+      }
+
+      console.log(points, path.node.attributes.d.nodeValue);
+
+
+
+
+      // var next_y,next_x;
+      //
+      // if( !path || points.length == 0 ){
+      //   next_x = properties.center.x;
+      //   next_y = properties.center.y;
+      // }else{
+      //   var prev_point = points[points.length-1];
+      //   next_x = properties.init_x+prev_point.x + x;
+      //   next_y = properties.init_y+prev_point.y + y;
+      // }
+      // this.add(next_x, next_y);
     }
 
     this.add = function(x, y){

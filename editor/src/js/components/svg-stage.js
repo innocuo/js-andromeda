@@ -96,16 +96,16 @@ Vue.component('svg-stage', {
 
         switch(key){
           case 0:
-            path.relative_add(0,-(this.lineRadius*1));
+            path.relative_add('v',-(this.lineRadius*1));
           break;
           case 1:
-            path.relative_add(this.lineRadius*1,0);
+            path.relative_add('h',(this.lineRadius*1));
           break;
           case 2:
-            path.relative_add(0,this.lineRadius*1);
+            path.relative_add('v',this.lineRadius*1);
           break;
           case 3:
-            path.relative_add(-(this.lineRadius*1),0);
+            path.relative_add('h',-(this.lineRadius*1));
           break;
           case 4:
             path.end();
