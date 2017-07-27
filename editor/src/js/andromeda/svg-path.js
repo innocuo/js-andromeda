@@ -268,6 +268,12 @@ var SVGPath = (function(){
       }
     }
 
+    this.end = function(){
+      console.log('end path')
+      path.node.attributes.d.nodeValue += 'Z';
+      this.clear();
+    }
+
     this.get_width = function(){
       return path.node.getBoundingClientRect().width;
     }

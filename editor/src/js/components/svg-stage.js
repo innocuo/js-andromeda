@@ -82,10 +82,12 @@ Vue.component('svg-stage', {
 
     },
     keyDown: function(e){
-      //up, right, down, left
-      var keys = [38,39,40,37];
+      //up, right, down, left,z
+      var keys = [38,39,40,37,90];
 
       let key = _.indexOf(keys,e.keyCode);
+
+      console.log(e.keyCode)
       if(key != -1){
         var path = SVGPath.get(this.s);
         path.set('radius', this.lineRadius);
@@ -104,6 +106,9 @@ Vue.component('svg-stage', {
           break;
           case 3:
             path.relative_add(-(this.lineRadius*1),0);
+          break;
+          case 4:
+            path.end();
           break;
         }
         path.draw();
