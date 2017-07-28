@@ -22,29 +22,10 @@ var SVGPath = (function(){
 
     var points = [];
 
-    var add_column = function(w, h, x){
-
-      var r = w/2;
-
-      var path_str = ['V',h,'C',x,',', h-r,',',x+r,',',h-r,',',x+r,',',h-r,'C',x+r,',',h-r,',',x+w,',',h-r,',',x+w,',',h].join('');
-      path.node.attributes.d.nodeValue += path_str;
-    }
-
     this.end_draw = function(){
       var path_str = 'L 0 0';
       path.node.attributes.d.nodeValue += path_str;
       this.clear();
-    }
-
-    var random_int = function( val ){
-
-      return Math.round(Math.random() * val);
-    }
-
-    var lighten = function( val, percent ){
-
-      var new_val = val* (100+percent)/100;
-      return (new_val > 255)? 255 : new_val;
     }
 
     this.draw = function(){
@@ -56,18 +37,6 @@ var SVGPath = (function(){
           strokeWidth: properties.strokeWidth
         });
       }
-      //var last_pos = 0;
-      //for(var i=0; i<properties.cols; i++){
-      //  var w = properties.min_r + (Math.random() * (properties.max_r-properties.min_r) );
-      //  var h = -1 * ( properties.min_h + Math.random() * (properties.max_h-properties.min_h) );
-
-      //   w = Math.round(w);
-      //   h = Math.round(h);
-      //   add_column(w, h, last_pos);
-      //   last_pos += w;
-      // }
-
-      //end_draw();
     }
 
     this.set = function(key, value){
@@ -77,19 +46,6 @@ var SVGPath = (function(){
 
     this.send_to_back = function(){
       path.prependTo(paper);
-    }
-
-    this.set_random = function(key){
-      switch(key){
-        case 'stroke':
-          var r = random_int(255),
-              g = random_int(255),
-              b = random_int(255);
-
-          properties['stroke'] = 'rgb('+[r,g,b].join(',')+')';
-
-        break;
-      }
     }
 
     this.redraw = function(){
@@ -203,7 +159,7 @@ var SVGPath = (function(){
       }
 
       var prev_point = points[points.length-1];
-console.log(prev_point)
+
       if( prev_point && prev_point.dir.toLowerCase() == dir){
         path_str = dir + ( step + prev_point.step);
         prev_point.step = ( step + prev_point.step)
