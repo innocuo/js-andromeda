@@ -82,8 +82,8 @@ Vue.component('svg-stage', {
 
     },
     keyDown: function(e){
-      //up, right, down, left,z
-      var keys = [38,39,40,37,90];
+      //up, right, down, left,z,u
+      var keys = [38,39,40,37,90,85];
 
       let key = _.indexOf(keys,e.keyCode);
 
@@ -109,6 +109,9 @@ Vue.component('svg-stage', {
           break;
           case 4:
             path.end();
+          break;
+          case 5:
+            path.undo();
           break;
         }
         path.draw();

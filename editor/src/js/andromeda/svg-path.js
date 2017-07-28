@@ -53,7 +53,7 @@ var SVGPath = (function(){
 
       path.node.attributes.d.nodeValue = '';
       var new_path = [];
-      $.each(points, function( idx, val){
+      _.forEach(points, function( val){
         new_path.push(val.str);
       });
       path.node.attributes.d.nodeValue = new_path.join('');
