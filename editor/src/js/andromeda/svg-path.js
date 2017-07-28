@@ -175,6 +175,18 @@ var SVGPath = (function(){
 
     }
 
+    this.get_curve_from_h = function(prev_step, radius){
+      var dif = Math.abs(radius) * (Math.sign(prev_step))
+      var path_str = 'c'+['0','0', dif, 0, dif, radius].join(',');
+      return path_str;
+    }
+
+    this.get_curve_from_v = function(prev_step, radius){
+      var dif = Math.abs(radius) * (Math.sign(prev_step))
+      var path_str = 'c'+['0','0','0', dif, radius, dif].join(',');
+      return path_str;
+    }
+
     this.relative_add = function( dir, step){
 
       var path_str;
@@ -191,8 +203,8 @@ var SVGPath = (function(){
       }
 
       var prev_point = points[points.length-1];
-
-      if( prev_point.dir.toLowerCase() == dir){
+console.log(prev_point)
+      if( prev_point && prev_point.dir.toLowerCase() == dir){
         path_str = dir + ( step + prev_point.step);
         prev_point.step = ( step + prev_point.step)
         prev_point.str = path_str;
@@ -212,12 +224,40 @@ var SVGPath = (function(){
 
 
       }else{
-        path_str = dir + step;
-        points.push({ step: step, dir: dir, dif: 0, str: path_str });
-        path.node.attributes.d.nodeValue += path_str;
+        switch (prev_point.dir.toLowerCase()) {
+          case 'h':
+            path_str = this.get_curve_from_h( prev_point.step, step );
+            points.push({ step: step, dir: 'c'+dir, dif: 0, str: path_str });
+            path.node.attributes.d.nodeValue += path_str;
+            break;
+          case 'v':
+            path_str = this.get_curve_from_v( prev_point.step, step );
+            points.push({ step: step, dir: 'c'+dir, dif: 0, str: path_str });
+            path.node.attributes.d.nodeValue += path_str;
+            break;
+          default:
+            if(prev_point.dir.toLowerCase()=='cv' && dir=='h'){
+
+              path_str = this.get_curve_from_v( prev_point.step, step );
+              points.push({ step: step, dir: 'c'+dir, dif: 0, str: path_str });
+              path.node.attributes.d.nodeValue += path_str;
+            }else if(prev_point.dir.toLowerCase()=='ch' && dir=='v'){
+
+              path_str = this.get_curve_from_h( prev_point.step, step );
+              points.push({ step: step, dir: 'c'+dir, dif: 0, str: path_str });
+              path.node.attributes.d.nodeValue += path_str;
+            }else{
+
+              path_str = dir + step;
+              points.push({ step: step, dir: dir, dif: 0, str: path_str });
+              path.node.attributes.d.nodeValue += path_str;
+            }
+        }
+
+
       }
 
-      console.log(points, path.node.attributes.d.nodeValue);
+      console.log(path.node.attributes.d.nodeValue);
 
 
 
@@ -246,7 +286,7 @@ var SVGPath = (function(){
         properties.init_y = Math.round( y );
 
         path.transform( 't' + [properties.init_x, properties.init_y].join(',') );
-        points.push({x: 0, y: 0, dir: null, str: path_str });
+        points.push({x: 0, y: 0, dir: '0', str: path_str });
       }else{
         var new_x = Math.round( x ) - properties.init_x,
             new_y = Math.round( y ) - properties.init_y;
